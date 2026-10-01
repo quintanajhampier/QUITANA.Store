@@ -1,0 +1,16 @@
+rules_version = '2';
+
+// QUINTANA.Store — Firebase Storage Security Rules
+// Single-admin store: public reads product images, only authorized admin UID can write.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Product images: anyone can view, only admin can upload/modify/delete
+    match /product-images/{imageId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == 'dKGCXBrl7keYkL8qprx1TnrcHrr2';
+    }
+  }
+}
